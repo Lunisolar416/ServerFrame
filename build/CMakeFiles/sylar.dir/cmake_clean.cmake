@@ -1,0 +1,15 @@
+file(REMOVE_RECURSE
+  "/home/lunisolar/cpp/mysylar/lib/libsylar.pdb"
+  "/home/lunisolar/cpp/mysylar/lib/libsylar.so"
+  "CMakeFiles/sylar.dir/sylar/config.cc.o"
+  "CMakeFiles/sylar.dir/sylar/config.cc.o.d"
+  "CMakeFiles/sylar.dir/sylar/log.cc.o"
+  "CMakeFiles/sylar.dir/sylar/log.cc.o.d"
+  "CMakeFiles/sylar.dir/sylar/util.cc.o"
+  "CMakeFiles/sylar.dir/sylar/util.cc.o.d"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/sylar.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

@@ -1,0 +1,1 @@
+2025-11-02 14:27:03	6389		0	[ERROR]	[root]	/home/lunisolar/cpp/mysylar/test/logtest.cc:23	test macor fmt error bb
