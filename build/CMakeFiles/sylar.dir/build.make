@@ -114,11 +114,71 @@ CMakeFiles/sylar.dir/sylar/config.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sylar.dir/sylar/config.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lunisolar/cpp/mysylar/sylar/config.cc -o CMakeFiles/sylar.dir/sylar/config.cc.s
 
+CMakeFiles/sylar.dir/sylar/thread.cc.o: CMakeFiles/sylar.dir/flags.make
+CMakeFiles/sylar.dir/sylar/thread.cc.o: /home/lunisolar/cpp/mysylar/sylar/thread.cc
+CMakeFiles/sylar.dir/sylar/thread.cc.o: CMakeFiles/sylar.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lunisolar/cpp/mysylar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/sylar.dir/sylar/thread.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/sylar.dir/sylar/thread.cc.o -MF CMakeFiles/sylar.dir/sylar/thread.cc.o.d -o CMakeFiles/sylar.dir/sylar/thread.cc.o -c /home/lunisolar/cpp/mysylar/sylar/thread.cc
+
+CMakeFiles/sylar.dir/sylar/thread.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sylar.dir/sylar/thread.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lunisolar/cpp/mysylar/sylar/thread.cc > CMakeFiles/sylar.dir/sylar/thread.cc.i
+
+CMakeFiles/sylar.dir/sylar/thread.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sylar.dir/sylar/thread.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lunisolar/cpp/mysylar/sylar/thread.cc -o CMakeFiles/sylar.dir/sylar/thread.cc.s
+
+CMakeFiles/sylar.dir/sylar/mutex.cc.o: CMakeFiles/sylar.dir/flags.make
+CMakeFiles/sylar.dir/sylar/mutex.cc.o: /home/lunisolar/cpp/mysylar/sylar/mutex.cc
+CMakeFiles/sylar.dir/sylar/mutex.cc.o: CMakeFiles/sylar.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lunisolar/cpp/mysylar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/sylar.dir/sylar/mutex.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/sylar.dir/sylar/mutex.cc.o -MF CMakeFiles/sylar.dir/sylar/mutex.cc.o.d -o CMakeFiles/sylar.dir/sylar/mutex.cc.o -c /home/lunisolar/cpp/mysylar/sylar/mutex.cc
+
+CMakeFiles/sylar.dir/sylar/mutex.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sylar.dir/sylar/mutex.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lunisolar/cpp/mysylar/sylar/mutex.cc > CMakeFiles/sylar.dir/sylar/mutex.cc.i
+
+CMakeFiles/sylar.dir/sylar/mutex.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sylar.dir/sylar/mutex.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lunisolar/cpp/mysylar/sylar/mutex.cc -o CMakeFiles/sylar.dir/sylar/mutex.cc.s
+
+CMakeFiles/sylar.dir/sylar/fiber.cc.o: CMakeFiles/sylar.dir/flags.make
+CMakeFiles/sylar.dir/sylar/fiber.cc.o: /home/lunisolar/cpp/mysylar/sylar/fiber.cc
+CMakeFiles/sylar.dir/sylar/fiber.cc.o: CMakeFiles/sylar.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lunisolar/cpp/mysylar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/sylar.dir/sylar/fiber.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/sylar.dir/sylar/fiber.cc.o -MF CMakeFiles/sylar.dir/sylar/fiber.cc.o.d -o CMakeFiles/sylar.dir/sylar/fiber.cc.o -c /home/lunisolar/cpp/mysylar/sylar/fiber.cc
+
+CMakeFiles/sylar.dir/sylar/fiber.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sylar.dir/sylar/fiber.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lunisolar/cpp/mysylar/sylar/fiber.cc > CMakeFiles/sylar.dir/sylar/fiber.cc.i
+
+CMakeFiles/sylar.dir/sylar/fiber.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sylar.dir/sylar/fiber.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lunisolar/cpp/mysylar/sylar/fiber.cc -o CMakeFiles/sylar.dir/sylar/fiber.cc.s
+
+CMakeFiles/sylar.dir/sylar/scheduler.cc.o: CMakeFiles/sylar.dir/flags.make
+CMakeFiles/sylar.dir/sylar/scheduler.cc.o: /home/lunisolar/cpp/mysylar/sylar/scheduler.cc
+CMakeFiles/sylar.dir/sylar/scheduler.cc.o: CMakeFiles/sylar.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lunisolar/cpp/mysylar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/sylar.dir/sylar/scheduler.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/sylar.dir/sylar/scheduler.cc.o -MF CMakeFiles/sylar.dir/sylar/scheduler.cc.o.d -o CMakeFiles/sylar.dir/sylar/scheduler.cc.o -c /home/lunisolar/cpp/mysylar/sylar/scheduler.cc
+
+CMakeFiles/sylar.dir/sylar/scheduler.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/sylar.dir/sylar/scheduler.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lunisolar/cpp/mysylar/sylar/scheduler.cc > CMakeFiles/sylar.dir/sylar/scheduler.cc.i
+
+CMakeFiles/sylar.dir/sylar/scheduler.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/sylar.dir/sylar/scheduler.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lunisolar/cpp/mysylar/sylar/scheduler.cc -o CMakeFiles/sylar.dir/sylar/scheduler.cc.s
+
 # Object files for target sylar
 sylar_OBJECTS = \
 "CMakeFiles/sylar.dir/sylar/log.cc.o" \
 "CMakeFiles/sylar.dir/sylar/util.cc.o" \
-"CMakeFiles/sylar.dir/sylar/config.cc.o"
+"CMakeFiles/sylar.dir/sylar/config.cc.o" \
+"CMakeFiles/sylar.dir/sylar/thread.cc.o" \
+"CMakeFiles/sylar.dir/sylar/mutex.cc.o" \
+"CMakeFiles/sylar.dir/sylar/fiber.cc.o" \
+"CMakeFiles/sylar.dir/sylar/scheduler.cc.o"
 
 # External object files for target sylar
 sylar_EXTERNAL_OBJECTS =
@@ -126,10 +186,14 @@ sylar_EXTERNAL_OBJECTS =
 /home/lunisolar/cpp/mysylar/lib/libsylar.so: CMakeFiles/sylar.dir/sylar/log.cc.o
 /home/lunisolar/cpp/mysylar/lib/libsylar.so: CMakeFiles/sylar.dir/sylar/util.cc.o
 /home/lunisolar/cpp/mysylar/lib/libsylar.so: CMakeFiles/sylar.dir/sylar/config.cc.o
+/home/lunisolar/cpp/mysylar/lib/libsylar.so: CMakeFiles/sylar.dir/sylar/thread.cc.o
+/home/lunisolar/cpp/mysylar/lib/libsylar.so: CMakeFiles/sylar.dir/sylar/mutex.cc.o
+/home/lunisolar/cpp/mysylar/lib/libsylar.so: CMakeFiles/sylar.dir/sylar/fiber.cc.o
+/home/lunisolar/cpp/mysylar/lib/libsylar.so: CMakeFiles/sylar.dir/sylar/scheduler.cc.o
 /home/lunisolar/cpp/mysylar/lib/libsylar.so: CMakeFiles/sylar.dir/build.make
 /home/lunisolar/cpp/mysylar/lib/libsylar.so: /usr/local/lib/libyaml-cpp.a
 /home/lunisolar/cpp/mysylar/lib/libsylar.so: CMakeFiles/sylar.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/lunisolar/cpp/mysylar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX shared library /home/lunisolar/cpp/mysylar/lib/libsylar.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/lunisolar/cpp/mysylar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX shared library /home/lunisolar/cpp/mysylar/lib/libsylar.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/sylar.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

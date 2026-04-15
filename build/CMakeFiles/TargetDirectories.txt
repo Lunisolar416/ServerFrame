@@ -1,5 +1,8 @@
 /home/lunisolar/cpp/mysylar/build/CMakeFiles/sylar.dir
 /home/lunisolar/cpp/mysylar/build/CMakeFiles/logtest.dir
 /home/lunisolar/cpp/mysylar/build/CMakeFiles/config.dir
+/home/lunisolar/cpp/mysylar/build/CMakeFiles/thread.dir
+/home/lunisolar/cpp/mysylar/build/CMakeFiles/util.dir
+/home/lunisolar/cpp/mysylar/build/CMakeFiles/fiber.dir
 /home/lunisolar/cpp/mysylar/build/CMakeFiles/edit_cache.dir
 /home/lunisolar/cpp/mysylar/build/CMakeFiles/rebuild_cache.dir

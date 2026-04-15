@@ -206,29 +206,165 @@ CMakeFiles/sylar.dir/sylar/log.cc.o: \
  /usr/include/c++/13/bits/ranges_algobase.h \
  /usr/include/c++/13/pstl/glue_memory_defs.h \
  /usr/include/c++/13/pstl/execution_defs.h \
- /home/lunisolar/cpp/mysylar/sylar/util.h /usr/include/c++/13/cstdarg \
- /usr/include/c++/13/fstream /usr/include/c++/13/istream \
- /usr/include/c++/13/bits/istream.tcc /usr/include/c++/13/bits/codecvt.h \
- /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
- /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
- /usr/include/c++/13/bits/fstream.tcc /usr/include/c++/13/list \
- /usr/include/c++/13/bits/stl_list.h /usr/include/c++/13/bits/list.tcc \
- /usr/include/c++/13/map /usr/include/c++/13/bits/stl_tree.h \
- /usr/include/c++/13/bits/node_handle.h \
- /usr/include/c++/13/bits/stl_map.h \
- /usr/include/c++/13/bits/stl_multimap.h \
- /usr/include/c++/13/bits/erase_if.h /usr/include/c++/13/sstream \
- /usr/include/c++/13/bits/sstream.tcc /usr/include/c++/13/vector \
- /usr/include/c++/13/bits/stl_vector.h \
- /usr/include/c++/13/bits/stl_bvector.h \
- /usr/include/c++/13/bits/vector.tcc /usr/include/c++/13/functional \
- /usr/include/c++/13/bits/std_function.h \
+ /home/lunisolar/cpp/mysylar/sylar/thread.h \
+ /home/lunisolar/cpp/mysylar/sylar/mutex.h \
+ /home/lunisolar/cpp/mysylar/sylar/noncopyable.h \
+ /usr/include/c++/13/atomic /usr/include/semaphore.h \
+ /usr/include/x86_64-linux-gnu/bits/semaphore.h \
+ /usr/include/c++/13/functional /usr/include/c++/13/bits/std_function.h \
  /usr/include/c++/13/unordered_map \
  /usr/include/c++/13/bits/unordered_map.h \
  /usr/include/c++/13/bits/hashtable.h \
  /usr/include/c++/13/bits/hashtable_policy.h \
  /usr/include/c++/13/bits/enable_special_members.h \
- /usr/include/c++/13/array /usr/include/c++/13/bits/stl_algo.h \
+ /usr/include/c++/13/bits/node_handle.h \
+ /usr/include/c++/13/bits/erase_if.h /usr/include/c++/13/vector \
+ /usr/include/c++/13/bits/stl_vector.h \
+ /usr/include/c++/13/bits/stl_bvector.h \
+ /usr/include/c++/13/bits/vector.tcc /usr/include/c++/13/array \
+ /usr/include/c++/13/bits/stl_algo.h \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \
- /usr/include/c++/13/bits/uniform_int_dist.h /usr/include/c++/13/iostream
+ /usr/include/c++/13/bits/uniform_int_dist.h /usr/include/c++/13/thread \
+ /usr/include/c++/13/stop_token /usr/include/c++/13/bits/std_thread.h \
+ /usr/include/c++/13/semaphore /usr/include/c++/13/bits/semaphore_base.h \
+ /usr/include/c++/13/bits/chrono.h /usr/include/c++/13/ratio \
+ /usr/include/c++/13/limits /usr/include/c++/13/ctime \
+ /usr/include/c++/13/bits/parse_numbers.h \
+ /usr/include/c++/13/bits/atomic_timed_wait.h \
+ /usr/include/c++/13/bits/this_thread_sleep.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h \
+ /home/lunisolar/cpp/mysylar/sylar/util.h /usr/include/c++/13/cxxabi.h \
+ /usr/include/x86_64-linux-gnu/c++/13/bits/cxxabi_tweaks.h \
+ /usr/include/execinfo.h /usr/include/c++/13/fstream \
+ /usr/include/c++/13/istream /usr/include/c++/13/bits/istream.tcc \
+ /usr/include/c++/13/bits/codecvt.h \
+ /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
+ /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
+ /usr/include/c++/13/bits/fstream.tcc /usr/include/c++/13/list \
+ /usr/include/c++/13/bits/stl_list.h /usr/include/c++/13/bits/list.tcc \
+ /usr/include/c++/13/map /usr/include/c++/13/bits/stl_tree.h \
+ /usr/include/c++/13/bits/stl_map.h \
+ /usr/include/c++/13/bits/stl_multimap.h /usr/include/c++/13/sstream \
+ /usr/include/c++/13/bits/sstream.tcc \
+ /home/lunisolar/cpp/mysylar/sylar/config.h \
+ /usr/local/include/boost/lexical_cast.hpp \
+ /usr/local/include/boost/config.hpp \
+ /usr/local/include/boost/config/user.hpp \
+ /usr/local/include/boost/config/detail/select_compiler_config.hpp \
+ /usr/local/include/boost/config/compiler/gcc.hpp \
+ /usr/local/include/boost/config/detail/select_stdlib_config.hpp \
+ /usr/include/c++/13/version \
+ /usr/local/include/boost/config/stdlib/libstdcpp3.hpp \
+ /usr/local/include/boost/config/detail/select_platform_config.hpp \
+ /usr/local/include/boost/config/platform/linux.hpp \
+ /usr/local/include/boost/config/detail/posix_features.hpp \
+ /usr/local/include/boost/config/detail/suffix.hpp \
+ /usr/local/include/boost/config/helper_macros.hpp \
+ /usr/local/include/boost/config/detail/cxx_composite.hpp \
+ /usr/local/include/boost/lexical_cast/detail/buffer_view.hpp \
+ /usr/local/include/boost/lexical_cast/bad_lexical_cast.hpp \
+ /usr/local/include/boost/throw_exception.hpp \
+ /usr/local/include/boost/exception/exception.hpp \
+ /usr/local/include/boost/assert/source_location.hpp \
+ /usr/local/include/boost/cstdint.hpp /usr/include/c++/13/cstring \
+ /usr/include/string.h /usr/include/strings.h \
+ /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+ /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+ /usr/include/c++/13/source_location \
+ /usr/local/include/boost/config/workaround.hpp \
+ /usr/include/c++/13/utility /usr/include/c++/13/bits/stl_relops.h \
+ /usr/local/include/boost/lexical_cast/try_lexical_convert.hpp \
+ /usr/local/include/boost/lexical_cast/detail/is_character.hpp \
+ /usr/local/include/boost/lexical_cast/detail/converter_numeric.hpp \
+ /usr/local/include/boost/core/cmath.hpp /usr/include/c++/13/cmath \
+ /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+ /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+ /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+ /usr/include/c++/13/bits/specfun.h /usr/include/c++/13/tr1/gamma.tcc \
+ /usr/include/c++/13/tr1/special_function_util.h \
+ /usr/include/c++/13/tr1/bessel_function.tcc \
+ /usr/include/c++/13/tr1/beta_function.tcc \
+ /usr/include/c++/13/tr1/ell_integral.tcc \
+ /usr/include/c++/13/tr1/exp_integral.tcc \
+ /usr/include/c++/13/tr1/hypergeometric.tcc \
+ /usr/include/c++/13/tr1/legendre_function.tcc \
+ /usr/include/c++/13/tr1/modified_bessel_func.tcc \
+ /usr/include/c++/13/tr1/poly_hermite.tcc \
+ /usr/include/c++/13/tr1/poly_laguerre.tcc \
+ /usr/include/c++/13/tr1/riemann_zeta.tcc \
+ /usr/local/include/boost/limits.hpp \
+ /usr/local/include/boost/lexical_cast/detail/type_traits.hpp \
+ /usr/local/include/boost/lexical_cast/detail/converter_lexical.hpp \
+ /usr/local/include/boost/detail/lcast_precision.hpp \
+ /usr/local/include/boost/lexical_cast/detail/widest_char.hpp \
+ /usr/local/include/boost/container/container_fwd.hpp \
+ /usr/local/include/boost/container/detail/workaround.hpp \
+ /usr/local/include/boost/container/detail/std_fwd.hpp \
+ /usr/local/include/boost/move/detail/std_ns_begin.hpp \
+ /usr/local/include/boost/move/detail/std_ns_end.hpp \
+ /usr/local/include/boost/lexical_cast/detail/converter_lexical_streams.hpp \
+ /usr/local/include/boost/core/snprintf.hpp /usr/include/c++/13/locale \
+ /usr/include/c++/13/bits/locale_facets_nonio.h \
+ /usr/include/x86_64-linux-gnu/c++/13/bits/time_members.h \
+ /usr/include/x86_64-linux-gnu/c++/13/bits/messages_members.h \
+ /usr/include/libintl.h /usr/include/c++/13/bits/locale_facets_nonio.tcc \
+ /usr/include/c++/13/bits/locale_conv.h \
+ /usr/local/include/boost/lexical_cast/detail/lcast_char_constants.hpp \
+ /usr/local/include/boost/lexical_cast/detail/lcast_unsigned_converters.hpp \
+ /usr/local/include/boost/core/noncopyable.hpp \
+ /usr/local/include/boost/lexical_cast/detail/lcast_basic_unlockedbuf.hpp \
+ /usr/local/include/boost/detail/basic_pointerbuf.hpp \
+ /usr/local/include/boost/lexical_cast/detail/inf_nan.hpp \
+ /usr/include/c++/13/set /usr/include/c++/13/bits/stl_set.h \
+ /usr/include/c++/13/bits/stl_multiset.h \
+ /usr/include/c++/13/unordered_set \
+ /usr/include/c++/13/bits/unordered_set.h \
+ /usr/local/include/yaml-cpp/yaml.h /usr/local/include/yaml-cpp/parser.h \
+ /usr/local/include/yaml-cpp/dll.h /usr/local/include/yaml-cpp/emitter.h \
+ /usr/local/include/yaml-cpp/binary.h \
+ /usr/local/include/yaml-cpp/emitterdef.h \
+ /usr/local/include/yaml-cpp/emittermanip.h \
+ /usr/local/include/yaml-cpp/null.h \
+ /usr/local/include/yaml-cpp/ostream_wrapper.h \
+ /usr/local/include/yaml-cpp/fptostring.h \
+ /usr/local/include/yaml-cpp/emitterstyle.h \
+ /usr/local/include/yaml-cpp/stlemitter.h \
+ /usr/local/include/yaml-cpp/exceptions.h \
+ /usr/local/include/yaml-cpp/mark.h \
+ /usr/local/include/yaml-cpp/noexcept.h \
+ /usr/local/include/yaml-cpp/traits.h \
+ /usr/local/include/yaml-cpp/node/node.h \
+ /usr/local/include/yaml-cpp/node/detail/iterator_fwd.h \
+ /usr/local/include/yaml-cpp/node/ptr.h \
+ /usr/local/include/yaml-cpp/node/type.h \
+ /usr/local/include/yaml-cpp/node/impl.h \
+ /usr/local/include/yaml-cpp/node/detail/memory.h \
+ /usr/local/include/yaml-cpp/node/detail/node.h \
+ /usr/local/include/yaml-cpp/node/detail/node_ref.h \
+ /usr/local/include/yaml-cpp/node/detail/node_data.h \
+ /usr/local/include/yaml-cpp/node/detail/node_iterator.h \
+ /usr/include/c++/13/iterator /usr/include/c++/13/bits/stream_iterator.h \
+ /usr/local/include/yaml-cpp/node/iterator.h \
+ /usr/local/include/yaml-cpp/node/detail/iterator.h \
+ /usr/local/include/yaml-cpp/node/convert.h /usr/include/c++/13/valarray \
+ /usr/include/c++/13/algorithm /usr/include/c++/13/bits/ranges_algo.h \
+ /usr/include/c++/13/pstl/glue_algorithm_defs.h \
+ /usr/include/c++/13/bits/valarray_array.h \
+ /usr/include/c++/13/bits/valarray_array.tcc \
+ /usr/include/c++/13/bits/valarray_before.h \
+ /usr/include/c++/13/bits/slice_array.h \
+ /usr/include/c++/13/bits/valarray_after.h \
+ /usr/include/c++/13/bits/gslice.h \
+ /usr/include/c++/13/bits/gslice_array.h \
+ /usr/include/c++/13/bits/mask_array.h \
+ /usr/include/c++/13/bits/indirect_array.h \
+ /usr/local/include/yaml-cpp/node/detail/impl.h \
+ /usr/local/include/yaml-cpp/node/parse.h \
+ /usr/local/include/yaml-cpp/node/emit.h /usr/include/c++/13/iostream

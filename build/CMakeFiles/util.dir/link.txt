@@ -1,0 +1,1 @@
+/usr/bin/c++  -rdynamic -g -O3 -Wall -Wextra -Werror -pthread -Wno-unused-function -Wno-deprecated -Wno-unused-parameter CMakeFiles/util.dir/test/test_util.cc.o -o util  -Wl,-rpath,/home/lunisolar/cpp/mysylar/lib /home/lunisolar/cpp/mysylar/lib/libsylar.so /usr/local/lib/libyaml-cpp.a 

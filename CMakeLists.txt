@@ -19,6 +19,10 @@ set(LIB_SRC
     sylar/log.cc
     sylar/util.cc
     sylar/config.cc
+    sylar/thread.cc
+    sylar/mutex.cc
+    sylar/fiber.cc
+    sylar/scheduler.cc
 )
 
 # 生成共享库
@@ -53,7 +57,37 @@ target_link_libraries(config PRIVATE sylar)
 target_include_directories(config PUBLIC
     ${PROJECT_SOURCE_DIR}/sylar
 )
+# ======================
+# 测试 config 程序
+# ======================
+add_executable(thread test/testthread.cc)
+add_dependencies(thread sylar)
+target_link_libraries(thread PRIVATE sylar)
 
+target_include_directories(thread PUBLIC
+    ${PROJECT_SOURCE_DIR}/sylar
+)
+
+# ======================
+# 测试 util 程序
+# ======================
+add_executable(util test/test_util.cc)
+add_dependencies(util sylar)
+target_link_libraries(util PRIVATE sylar)
+
+target_include_directories(util PUBLIC
+    ${PROJECT_SOURCE_DIR}/sylar
+)
+# ======================
+# 测试 fiber 程序
+# ======================
+add_executable(fiber test/test_fiber.cc)
+add_dependencies(fiber sylar)
+target_link_libraries(fiber PRIVATE sylar)
+
+target_include_directories(fiber PUBLIC
+    ${PROJECT_SOURCE_DIR}/sylar
+)
 # ======================
 # 设置输出目录
 # ======================

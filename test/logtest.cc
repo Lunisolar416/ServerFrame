@@ -22,7 +22,7 @@ int main()
     SYLAR_LOG_ERROR(logger) << "this is a error message";
     SYLAR_LOG_FMT_ERROR(logger, "test macor fmt error %s", "bb");
 
-    auto l = loggerMgr::GetInstance()->getLogger("xx");
+    auto l = LoggerMgr::GetInstance()->getLogger("xx");
     SYLAR_LOG_INFO(l) << "XX";
 
     return 0;

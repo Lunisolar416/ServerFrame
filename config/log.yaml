@@ -1,32 +1,8 @@
 logs:
-    - name: root
-      level: info
-      appenders:
-          - type: FileLogAppender
-            file: /home/lunisolar/cpp/mysylar/log/root.txt
-          - type: StdoutLogAppender
-    - name: system
-      level: info
-      appenders:
-          - type: FileLogAppender
-            file: /home/lunisolar/cpp/mysylar/log/system.txt
-          - type: StdoutLogAppender
-system:
-    port: 9900
-    value: 15
-    vector:
-        - 10
-        - 20
-        - 30
-    list:
-        - 1
-        - 2
-        - 3
-    set: [100, 200, 300]
-    unordered_set: [323,12,1245,152,22]
-    map:
-        key1: 123
-        key2: 456
-    unordered_map:
-        key1: 789
-        key2: 12
+  - name: root
+    level: info
+    formatter: "%d{%Y-%m-%d %H:%M:%S}%T
+    appenders:
+      - type: StdoutLogAppender
+      - type: FileLogAppender
+        file: log.txt

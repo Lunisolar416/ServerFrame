@@ -1,2 +1,2 @@
-2025-11-25 13:54:21	9433		0	[ERROR]	[root]	/home/lunisolar/cpp/mysylar/test/logtest.cc:22	this is a error message
-2025-11-25 13:54:21	9433		0	[ERROR]	[root]	/home/lunisolar/cpp/mysylar/test/logtest.cc:23	test macor fmt error bb
+2026-01-03 13:38:08	5788		0	[ERROR]	[root]	/home/lunisolar/cpp/mysylar/test/logtest.cc:22	this is a error message
+2026-01-03 13:38:08	5788		0	[ERROR]	[root]	/home/lunisolar/cpp/mysylar/test/logtest.cc:23	test macor fmt error bb
