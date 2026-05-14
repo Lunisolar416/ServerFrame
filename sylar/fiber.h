@@ -42,7 +42,7 @@ class Fiber : public std::enable_shared_from_this<Fiber>
     Fiber();
 
   public:
-    Fiber(std::function<void()> cb, size_t stacksize = 0);
+    Fiber(std::function<void()> cb, size_t stacksize = 0, bool user_caller = false);
     ~Fiber();
 
     // 重置协程函数，并重置状态，只有当协程处于INIT或者TERM状态时才可以调用
@@ -51,7 +51,10 @@ class Fiber : public std::enable_shared_from_this<Fiber>
     void swapIn();
     // 切换到后台执行
     void swapOut();
-
+    //
+    void call();
+    //
+    void back();
     State getState() const
     {
         return m_state;
@@ -79,6 +82,7 @@ class Fiber : public std::enable_shared_from_this<Fiber>
     static uint64_t GetFiberId();
 
     static void MainFunc();
+    static void CallerMainFunc();
 
   private:
     uint64_t m_id = 0;        // 协程ID
