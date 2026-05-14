@@ -6,6 +6,7 @@
 
 // Socket相关函数的都是同步的，Hook技术可以将这些函数替换为异步的版本，从而实现非阻塞的网络编程。这对于高性能服务器开发非常有用，可以提高系统的吞吐量和响应速度。
 #include <sys/fcntl.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <time.h>
@@ -72,9 +73,40 @@ extern "C"
     typedef int (*close_fun)(int fd);
     extern close_fun close_f;
 
-    // fcntl
+    // fcntl 对已经打开的 fd（文件/Socket）进行各种控制操作 fd：文件描述符（socket / file
+    // /pipe）cmd：控制命令 arg：可选参数（看 cmd）
+    // 设置非阻塞 fcntl(fd, F_SETFL, O_NONBLOCK);
+    // 获取当前的文件状态标志 fcntl(fd, F_GETFL);
+    // 设置当前的文件状态标志 fcntl(fd, F_SETFL, flags);
+    // 复制文件描述符 fcntl(fd, F_DUPFD, arg);
     typedef int (*fcntl_fun)(int fd, int cmd, ...);
     extern fcntl_fun fcntl_f;
+
+    // ioctl 对“设备/文件描述符”的特殊控制通道
+    typedef int (*ioctl_fun)(int d, unsigned long int request, ...);
+    extern ioctl_fun ioctl_f;
+
+    // getsockopt/setsockopt 读取/设置 socket 参数（选项）
+    // level：参数所在的协议层（SOL_SOCKET / IPPROTO_TCP / IPPROTO_IP）optname：参数名称
+    // optval：参数值 optlen：参数值长度
+    // SOL_SOCKET   → socket 通用层  IPPROTO_TCP  → TCP 层 IPPROTO_IP   → IP 层
+    typedef int (*getsockopt_fun)(int sockfd, int level, int optname, void* optval,
+                                  socklen_t* optlen);
+    extern getsockopt_fun getsockopt_f;
+
+    // setsockopt_fun 设置 socket 参数（选项）
+    /*
+    端口复用 SO_REUSEADDR，允许多个套接字绑定到同一个地址和端口上，常用于服务器重启时快速恢复服务。
+            int opt = 1;
+            setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));*/
+    /*
+    开启 keepalive，保活TCP链接，定期发送心跳包检测连接是否仍然有效，防止死链接占用资源。
+            int opt = 1;
+            setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &opt, sizeof(opt));
+    */
+    typedef int (*setsockopt_fun)(int sockfd, int level, int optname, const void* optval,
+                                  socklen_t optlen);
+    extern setsockopt_fun setsockopt_f;
 }
 
 #endif //__SYLAR__HOOK_H__
