@@ -25,6 +25,7 @@ set(LIB_SRC
     sylar/scheduler.cc
     sylar/iomanager.cc
     sylar/timer.cc
+    sylar/hook.cc
 )
 
 # 生成共享库
@@ -110,6 +111,18 @@ add_dependencies(iomanager sylar)
 target_link_libraries(iomanager PRIVATE sylar)
 
 target_include_directories(iomanager PUBLIC
+    ${PROJECT_SOURCE_DIR}/sylar
+)
+
+
+# ======================
+# 测试 hook 程序
+# ======================
+add_executable(hook test/test_hook.cc)
+add_dependencies(hook sylar)
+target_link_libraries(hook PRIVATE sylar)
+
+target_include_directories(hook PUBLIC
     ${PROJECT_SOURCE_DIR}/sylar
 )
 
