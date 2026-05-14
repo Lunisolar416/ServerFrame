@@ -66,6 +66,10 @@ extern "C"
     extern sendto_fun sendto_f;
     typedef ssize_t (*sendmsg_fun)(int sockfd, const struct msghdr* msg, int flags);
     extern sendmsg_fun sendmsg_f;
+
+    // close
+    typedef int (*close_fun)(int fd);
+    extern close_fun close_f;
 }
 
 #endif //__SYLAR__HOOK_H__
