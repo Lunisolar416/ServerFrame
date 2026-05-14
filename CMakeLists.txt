@@ -23,6 +23,8 @@ set(LIB_SRC
     sylar/mutex.cc
     sylar/fiber.cc
     sylar/scheduler.cc
+    sylar/iomanager.cc
+    sylar/timer.cc
 )
 
 # 生成共享库
@@ -88,6 +90,29 @@ target_link_libraries(fiber PRIVATE sylar)
 target_include_directories(fiber PUBLIC
     ${PROJECT_SOURCE_DIR}/sylar
 )
+
+# ======================
+# 测试 scheduler 程序
+# ======================
+add_executable(scheduler test/test_scheduler.cc)
+add_dependencies(scheduler sylar)
+target_link_libraries(scheduler PRIVATE sylar)
+
+target_include_directories(scheduler PUBLIC
+    ${PROJECT_SOURCE_DIR}/sylar
+)
+
+# ======================
+# 测试 iomanager 程序
+# ======================
+add_executable(iomanager test/test_iomanager.cc)
+add_dependencies(iomanager sylar)
+target_link_libraries(iomanager PRIVATE sylar)
+
+target_include_directories(iomanager PUBLIC
+    ${PROJECT_SOURCE_DIR}/sylar
+)
+
 # ======================
 # 设置输出目录
 # ======================
