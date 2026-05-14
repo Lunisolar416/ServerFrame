@@ -1,11 +1,12 @@
 
 #include "hook.h"
+#include "fd_manager.h"
 #include "fiber.h"
 #include "iomanager.h"
+#include <cerrno>
 #include <ctime>
 #include <dlfcn.h>
 #include <sys/types.h>
-
 namespace mysylar
 {
 
@@ -67,7 +68,102 @@ void set_hook_enable(bool flag)
     t_hook_enable = flag;
 }
 } // namespace mysylar
+// timer_info 用来标记“这个 IO 等待是正常完成还是被超时/取消中断
+struct timer_info
+{
+    int cancelled = 0;
+};
+template <typename OriginFun, typename... Args>
+static ssize_t do_io(int fd, OriginFun fun, const char* hook_fun_name, uint32_t event,
+                     int timeout_so, ssize_t buflen, Args&&... args)
+{
+    if (!mysylar::t_hook_enable)
+    {
+        // 不是hook版本，直接调用原始函数
+        return fun(fd, std::forward<Args>(args)...);
+    }
+    mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(fd);
+    if (!ctx)
+    {
+        return fun(fd, std::forward<Args>(args)...);
+    }
+    if (ctx->isClose())
+    {
+        errno = EBADF; // EBADF(Bad File Descriptor)文件描述符错误,意思是这个 fd 已经关闭/无效
+        return -1;
+    }
+    // 如果不是socket或者用户设置了非阻塞，就直接调用原始函数
+    if (!ctx->isSocket() || ctx->getUserNonblock())
+    {
+        return fun(fd, std::forward<Args>(args)...);
+    }
 
+    // to timeout
+    uint64_t to = ctx->getTimeout(timeout_so);
+    std::shared_ptr<timer_info> tinfo(new timer_info);
+retry:
+    // 先直接尝试 IO，是因为“很多时候数据其实已经准备好了”，没必要立刻进入 epoll + 挂起协程,优化
+    size_t n = fun(fd, std::forward<Args>(args)...);
+
+    while (n == -1 && errno == EINTR)
+    {
+        // 被打断了，继续尝试
+        n = fun(fd, std::forward<Args>(args)...);
+    }
+    // 如果是 EAGAIN(Resource temporarily unavailable (资源暂时不可用，请稍后重试。))，说明是非阻塞
+    // I/O 操作，需要挂起协程等待事件发生
+    if (n == -1 && errno == EAGAIN)
+    {
+        //
+        mysylar::IOManager* iom = mysylar::IOManager::GetThis();
+        mysylar::Timer::ptr timer;
+        std::weak_ptr<timer_info> winfo(tinfo);
+        // 判断 timeout 是否有效（是否设置了超时时间）
+        if (to != (uint64_t) -1)
+        {
+            // 添加一个条件定时器，超时后会执行回调函数，回调函数会设置 timer_info 的 cancelled
+            // 字段，并取消事件监听，唤醒协程
+            timer = iom->addConditionTimer(
+                to,
+                [winfo, fd, iom, event]()
+                {
+                    auto t = winfo.lock();
+                    // 避免重复处理或访问已经失效的 timer 状态
+                    if (!t || t->cancelled)
+                        return;
+                    t->cancelled = ETIMEDOUT; // ETIMEDOUT (Connection timed out)连接超时
+                    // 超时了，取消事件监听，唤醒协程
+                    iom->cancelEvent(fd, (mysylar::IOManager::Event)(event));
+                },
+                winfo);
+        }
+
+        int rt = iom->addEvent(fd, (mysylar::IOManager::Event)(event));
+        if (rt != 0)
+        {
+        }
+        else
+        {
+            // 挂起协程，等待事件发生或超时
+            mysylar::Fiber::YieldToHold();
+            // 协程被唤醒后，先取消定时器，避免误
+            if (timer)
+            {
+                // 这时候就是timer有addConditionTimer ，避免误触发,取消定时器
+                timer->cancel();
+            }
+            if (tinfo->cancelled)
+            {
+                // 这时候就是超时或者被取消了，返回错误
+                errno = tinfo->cancelled;
+                return -1;
+            }
+            // 事件发生了，也就是这个协程被唤醒，重新尝试 IO 操作
+            goto retry;
+        }
+    }
+    return n;
+}
 extern "C"
 {
 #define XX(name) name##_fun name##_f = nullptr;
@@ -115,4 +211,9 @@ extern "C"
         mysylar::Fiber::YieldToHold();
         return 0;
     }
+
+    // socket函数的hook版本
+    int socket(int domain, int type, int protocol) {}
+    int connect(int sockfd, const struct sockaddr* addr, socklen_t addrlen) {}
+    int accept(int s, struct sockaddr* addr, socklen_t* addrlen) {}
 }
