@@ -38,6 +38,21 @@ extern "C"
 
     typedef int (*accept_fun)(int s, struct sockaddr* addr, socklen_t* addrlen);
     extern accept_fun accept_f;
+
+    // read
+    typedef ssize_t (*read_fun)(int fd, void* buf, size_t count);
+    extern read_fun read_f;
+
+    typedef ssize_t (*readv_fun)(int fd, const struct iovec* iov, int iovcnt);
+    extern readv_fun readv_f;
+
+    typedef ssize_t (*recv_fun)(int sockfd, void* buf, size_t len, int flags);
+    extern recv_fun recv_f;
+    typedef ssize_t (*recvfrom_fun)(int sockfd, void* buf, size_t len, int flags,
+                                    struct sockaddr* src_addr, socklen_t* addrlen);
+    extern recvfrom_fun recvfrom_f;
+    typedef ssize_t (*recvmsg_fun)(int sockefd, struct msghdr* msg, int flags);
+    extern recvmsg_fun recvmsg_f;
 }
 
 #endif //__SYLAR__HOOK_H__
