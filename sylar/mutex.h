@@ -101,7 +101,7 @@ struct ReadScopedLockImpl
         if (!m_locked)
         {
             m_mutex.rdlock();
-            m_mutex.m_locked = true;
+            m_locked = true;
         }
     }
     void unlock()

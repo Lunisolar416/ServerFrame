@@ -15,11 +15,19 @@ pid_t GetThreadId();
 uint32_t GetFiberId();
 void Backtrace(std::vector<std::string>& bt, int size, int skip = 1);
 std::string BacktraceToString(int size, int skip = 2, const std::string& prefix = "");
-} // namespace mysylar
+
 template <class T>
 const char* TypeToName()
 {
     static const char* s_name = abi::__cxa_demangle(typeid(T).name(), nullptr, nullptr, nullptr);
     return s_name;
 }
+
+// 时间
+
+uint64_t GetCurrentMS();
+uint64_t GetCurrentUS();
+
+} // namespace mysylar
+
 #endif // __SYLAR_UTIL_H__
