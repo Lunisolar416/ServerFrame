@@ -81,4 +81,18 @@ extern "C"
         mysylar::Fiber::YieldToHold();
         return 0;
     }
+    int nanosleep(const struct timespec* req, struct timespec* rem)
+    {
+        if (!mysylar::t_hook_enable)
+        {
+            // 如果hook没有启用，直接调用原始的sleep函数
+            return nanosleep(req, rem);
+        }
+        int timeout_ms = req->tv_sec * 1000 + req->tv_nsec / 1000 / 1000;
+        mysylar::Fiber::ptr fiber = mysylar::Fiber::GetThis();
+        mysylar::IOManager* iom = mysylar::IOManager::GetThis();
+        iom->addTimer(timeout_ms, [iom, fiber]() { iom->schedule(fiber, -1); });
+        mysylar::Fiber::YieldToHold();
+        return 0;
+    }
 }
