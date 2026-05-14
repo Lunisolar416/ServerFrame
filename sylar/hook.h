@@ -5,6 +5,7 @@
 // 在Linux系统中，Hook技术常用于调试、性能分析、安全监控等
 
 // Socket相关函数的都是同步的，Hook技术可以将这些函数替换为异步的版本，从而实现非阻塞的网络编程。这对于高性能服务器开发非常有用，可以提高系统的吞吐量和响应速度。
+#include <sys/fcntl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <time.h>
@@ -70,6 +71,10 @@ extern "C"
     // close
     typedef int (*close_fun)(int fd);
     extern close_fun close_f;
+
+    // fcntl
+    typedef int (*fcntl_fun)(int fd, int cmd, ...);
+    extern fcntl_fun fcntl_f;
 }
 
 #endif //__SYLAR__HOOK_H__
