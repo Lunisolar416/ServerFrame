@@ -53,6 +53,19 @@ extern "C"
     extern recvfrom_fun recvfrom_f;
     typedef ssize_t (*recvmsg_fun)(int sockefd, struct msghdr* msg, int flags);
     extern recvmsg_fun recvmsg_f;
+
+    // write
+    typedef size_t (*write_fun)(int fd, const void* buf, size_t count);
+    extern write_fun write_f;
+    typedef ssize_t (*writev_fun)(int fd, const struct iovec* iov, int iovcnt);
+    extern writev_fun writev_f;
+    typedef ssize_t (*send_fun)(int sockfd, const void* buf, size_t len, int flags);
+    extern send_fun send_f;
+    typedef ssize_t (*sendto_fun)(int sockfd, const void* buf, size_t len, int flags,
+                                  const struct sockaddr* dest_addr, socklen_t addrlen);
+    extern sendto_fun sendto_f;
+    typedef ssize_t (*sendmsg_fun)(int sockfd, const struct msghdr* msg, int flags);
+    extern sendmsg_fun sendmsg_f;
 }
 
 #endif //__SYLAR__HOOK_H__
