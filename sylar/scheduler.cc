@@ -1,5 +1,6 @@
 #include "scheduler.h"
 #include "fiber.h"
+#include "hook.h"
 #include "log.h"
 #include "macro.h"
 #include "thread.h"
@@ -144,6 +145,8 @@ void Scheduler::run()
     // SYLAR_LOG_DEBUG(g_logger) << m_name << "run";
     // SYLAR_LOG_DEBUG(g_logger) << "Run Fiber ID " << GetFiberId();
     setThis();
+    set_hook_enable(
+        true); // 启用hook，hook技术可以将一些同步的函数替换为异步的版本，从而实现非阻塞的网络编程
     // 当前线程的id不是主线程id，也就是现在是worker线程
     if (mysylar::GetThreadId() != m_rootThread)
     {
