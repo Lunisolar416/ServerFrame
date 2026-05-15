@@ -26,6 +26,7 @@ set(LIB_SRC
     sylar/iomanager.cc
     sylar/timer.cc
     sylar/hook.cc
+    sylar/fd_manager.cc
 )
 
 # 生成共享库
