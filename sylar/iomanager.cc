@@ -252,19 +252,18 @@ bool IOManager::cancelEvent(int fd, Event event)
  * @brief 取消所有事件
  * @param[in] fd socket句柄
  */
-bool IOManager::cancelAll(int fd, Event event)
+bool IOManager::cancelAll(int fd)
 {
-    RWMutex::ReadLock lock(m_mutex);
+    RWMutexType::ReadLock lock(m_mutex);
     if ((int) m_fdContexts.size() <= fd)
     {
-        // 该fd不存在
         return false;
     }
     FdContext* fd_ctx = m_fdContexts[fd];
     lock.unlock();
 
     FdContext::MutexType::Lock lock2(fd_ctx->mutex);
-    if (!(fd_ctx->events & event))
+    if (!fd_ctx->events)
     {
         return false;
     }
@@ -285,14 +284,15 @@ bool IOManager::cancelAll(int fd, Event event)
 
     if (fd_ctx->events & READ)
     {
-        fd_ctx->triggerEvent(event);
+        fd_ctx->triggerEvent(READ);
         --m_pendingEventCount;
     }
     if (fd_ctx->events & WRITE)
     {
-        fd_ctx->triggerEvent(event);
+        fd_ctx->triggerEvent(WRITE);
         --m_pendingEventCount;
     }
+
     SYLAR_ASSERT(fd_ctx->events == 0);
     return true;
 }
