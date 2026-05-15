@@ -5,11 +5,13 @@
 #include "iomanager.h"
 #include "log.h"
 #include "scheduler.h"
+#include <asm-generic/socket.h>
 #include <cerrno>
 #include <ctime>
 #include <dlfcn.h>
 #include <functional>
 #include <sys/types.h>
+#include <vector>
 static mysylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
 namespace mysylar
 {
@@ -203,7 +205,7 @@ static ssize_t do_io_state(int fd, OriginFun fun, const char* hook_fun_name, uin
 }*/
 template <typename OriginFun, typename... Args>
 static ssize_t do_io(int fd, OriginFun fun, const char* hook_fun_name, uint32_t event,
-                     int timeout_so, ssize_t buflen, Args&&... args)
+                     int timeout_so, Args&&... args)
 {
     if (!mysylar::t_hook_enable)
     {
@@ -231,7 +233,7 @@ static ssize_t do_io(int fd, OriginFun fun, const char* hook_fun_name, uint32_t 
     std::shared_ptr<timer_info> tinfo(new timer_info);
 retry:
     // 先直接尝试 IO，是因为“很多时候数据其实已经准备好了”，没必要立刻进入 epoll + 挂起协程,优化
-    size_t n = fun(fd, std::forward<Args>(args)...);
+    ssize_t n = fun(fd, std::forward<Args>(args)...);
 
     while (n == -1 && errno == EINTR)
     {
@@ -359,7 +361,62 @@ extern "C"
     }
 
     // socket函数的hook版本
-    int socket(int domain, int type, int protocol) {}
-    int connect(int sockfd, const struct sockaddr* addr, socklen_t addrlen) {}
-    int accept(int s, struct sockaddr* addr, socklen_t* addrlen) {}
+    int socket(int domain, int type, int protocol)
+    {
+        if (!mysylar::t_hook_enable)
+        {
+            return socket_f(domain, type, protocol);
+        }
+        int fd = socket_f(domain, type, protocol);
+        if (fd == -1)
+        {
+            return fd;
+        }
+        mysylar::FdMgr::GetInstance()->get(fd, true);
+        return fd;
+    }
+    int connect(int sockfd, const struct sockaddr* addr, socklen_t addrlen)
+    {
+        return connect_f(sockfd, addr, addrlen);
+    }
+    int accept(int s, struct sockaddr* addr, socklen_t* addrlen)
+    {
+        int fd = do_io(s, accept_f, "accept", mysylar::IOManager::READ, SO_RCVTIMEO, addr, addrlen);
+        if (fd >= 0)
+        {
+            mysylar::FdMgr::GetInstance()->get(fd, true);
+        }
+        return fd;
+    }
+
+    // read
+    ssize_t read(int fd, void* buf, size_t count)
+    {
+        return do_io(fd, read_f, "read", mysylar::IOManager::READ, SO_RCVTIMEO, buf, count);
+    }
+    ssize_t readv(int fd, const struct iovec* iov, int iovcnt)
+    {
+        return do_io(fd, readv_f, "readv", mysylar::IOManager::READ, SO_RCVTIMEO, iov, iovcnt);
+    }
+
+    ssize_t recv(int sockfd, void* buf, size_t len, int flags)
+    {
+        return do_io(sockfd, recv_f, "recv", mysylar::IOManager::READ, SO_RCVTIMEO, buf, len,
+                     flags);
+    }
+
+    ssize_t recvfrom(int sockfd, void* buf, size_t len, int flags, struct sockaddr* src_addr,
+                     socklen_t* addrlen)
+    {
+        return do_io(sockfd, recvfrom_f, "recvfrom", mysylar::IOManager::READ, SO_RCVTIMEO, buf,
+                     len, flags, src_addr, addrlen);
+    }
+
+    ssize_t recvmsg(int sockefd, struct msghdr* msg, int flags)
+    {
+        return do_io(sockefd, recvmsg_f, "recvmsg", mysylar::IOManager::READ, SO_RCVTIMEO, msg,
+                     flags);
+    }
+
+    // write
 }
