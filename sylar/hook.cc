@@ -447,4 +447,170 @@ extern "C"
         return do_io(sockfd, sendmsg_f, "sendmsg", mysylar::IOManager::WRITE, SO_SNDTIMEO, msg,
                      flags);
     }
+
+    // close
+    int close(int fd)
+    {
+        if (!mysylar::t_hook_enable)
+        {
+            return close_f(fd);
+        }
+        mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(fd);
+        if (ctx)
+        {
+            auto iom = mysylar::IOManager::GetThis();
+            // 取消这个 fd 上的所有事件监听，避免协程被唤醒
+            if (iom)
+            {
+                iom->cancelAll(fd);
+            }
+            mysylar::FdMgr::GetInstance()->del(fd);
+        }
+        return close_f(fd);
+    }
+
+    // fcntl
+    int fcntl(int fd, int cmd, ...)
+    {
+        va_list va;
+        va_start(va, cmd);
+        switch (cmd)
+        {
+        case F_SETFL:
+        {
+            int arg = va_arg(va, int);
+            va_end(va);
+            mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(fd);
+            if (!ctx || ctx->isClose() || !ctx->isSocket())
+            {
+                return fcntl_f(fd, cmd, arg);
+            }
+            ctx->setUserNonblock(arg & O_NONBLOCK);
+            if (ctx->getSysNonblock())
+            {
+                arg |= O_NONBLOCK;
+            }
+            else
+            {
+                arg &= ~O_NONBLOCK;
+            }
+            return fcntl_f(fd, cmd, arg);
+        }
+        break;
+        case F_GETFL:
+        {
+            va_end(va);
+            int arg = fcntl_f(fd, cmd);
+            mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(fd);
+            if (!ctx || ctx->isClose() || !ctx->isSocket())
+            {
+                return arg;
+            }
+            if (ctx->getUserNonblock())
+            {
+                return arg | O_NONBLOCK;
+            }
+            else
+            {
+                return arg & ~O_NONBLOCK;
+            }
+        }
+        break;
+        case F_DUPFD:
+        case F_DUPFD_CLOEXEC:
+        case F_SETFD:
+        case F_SETOWN:
+        case F_SETSIG:
+        case F_SETLEASE:
+        case F_NOTIFY:
+#ifdef F_SETPIPE_SZ
+        case F_SETPIPE_SZ:
+#endif
+        {
+            int arg = va_arg(va, int);
+            va_end(va);
+            return fcntl_f(fd, cmd, arg);
+        }
+        break;
+        case F_GETFD:
+        case F_GETOWN:
+        case F_GETSIG:
+        case F_GETLEASE:
+#ifdef F_GETPIPE_SZ
+        case F_GETPIPE_SZ:
+#endif
+        {
+            va_end(va);
+            return fcntl_f(fd, cmd);
+        }
+        break;
+        case F_SETLK:
+        case F_SETLKW:
+        case F_GETLK:
+        {
+            struct flock* arg = va_arg(va, struct flock*);
+            va_end(va);
+            return fcntl_f(fd, cmd, arg);
+        }
+        break;
+        case F_GETOWN_EX:
+        case F_SETOWN_EX:
+        {
+            struct f_owner_exlock* arg = va_arg(va, struct f_owner_exlock*);
+            va_end(va);
+            return fcntl_f(fd, cmd, arg);
+        }
+        break;
+        default:
+            va_end(va);
+            return fcntl_f(fd, cmd);
+        }
+    }
+    // ioctl
+    int ioctl(int d, unsigned long int request, ...)
+    {
+        va_list va;
+        va_start(va, request);
+        void* arg = va_arg(va, void*);
+        va_end(va);
+
+        if (FIONBIO == request)
+        {
+            bool user_nonblock = !!*(int*) arg;
+            mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(d);
+            if (!ctx || ctx->isClose() || !ctx->isSocket())
+            {
+                return ioctl_f(d, request, arg);
+            }
+            ctx->setUserNonblock(user_nonblock);
+        }
+        return ioctl_f(d, request, arg);
+    }
+    // getsockopt
+    int getsockopt(int sockfd, int level, int optname, void* optval, socklen_t* optlen)
+    {
+        return getsockopt_f(sockfd, level, optname, optval, optlen);
+    }
+
+    // setsockopt
+    int setsockopt(int sockfd, int level, int optname, const void* optval, socklen_t optlen)
+    {
+        if (!mysylar::t_hook_enable)
+        {
+            return setsockopt_f(sockfd, level, optname, optval, optlen);
+        }
+        if (level == SOL_SOCKET)
+        {
+            if (optname == SO_RCVTIMEO || optname == SO_SNDTIMEO)
+            {
+                mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(sockfd);
+                if (ctx)
+                {
+                    const timeval* v = (const timeval*) optval;
+                    ctx->setTimeout(optname, v->tv_sec * 1000 + v->tv_usec / 1000);
+                }
+            }
+        }
+        return setsockopt_f(sockfd, level, optname, optval, optlen);
+    }
 }
