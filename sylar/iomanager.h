@@ -83,11 +83,10 @@ class IOManager : public Scheduler, public TimerManager
      * @brief
      *
      * @param fd
-     * @param event
      * @return true
      * @return false
      */
-    bool cancelAll(int fd, Event event);
+    bool cancelAll(int fd);
 
     static IOManager* GetThis();
 
