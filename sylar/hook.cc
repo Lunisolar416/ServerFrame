@@ -419,4 +419,32 @@ extern "C"
     }
 
     // write
+    ssize_t write(int fd, const void* buf, size_t count)
+    {
+        return do_io(fd, write_f, "write", mysylar::IOManager::WRITE, SO_SNDTIMEO, buf, count);
+    }
+
+    ssize_t writev(int fd, const struct iovec* iov, int iovcnt)
+    {
+        return do_io(fd, writev_f, "writev", mysylar::IOManager::WRITE, SO_SNDTIMEO, iov, iovcnt);
+    }
+
+    ssize_t send(int sockfd, const void* buf, size_t len, int flags)
+    {
+        return do_io(sockfd, send_f, "send", mysylar::IOManager::WRITE, SO_SNDTIMEO, buf, len,
+                     flags);
+    }
+
+    ssize_t sendto(int sockfd, const void* buf, size_t len, int flags,
+                   const struct sockaddr* dest_addr, socklen_t addrlen)
+    {
+        return do_io(sockfd, sendto_f, "sendto", mysylar::IOManager::WRITE, SO_SNDTIMEO, buf, len,
+                     flags, dest_addr, addrlen);
+    }
+
+    ssize_t sendmsg(int sockfd, const struct msghdr* msg, int flags)
+    {
+        return do_io(sockfd, sendmsg_f, "sendmsg", mysylar::IOManager::WRITE, SO_SNDTIMEO, msg,
+                     flags);
+    }
 }
