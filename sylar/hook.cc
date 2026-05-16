@@ -1,15 +1,18 @@
 
 #include "hook.h"
+#include "config.h"
 #include "fd_manager.h"
 #include "fiber.h"
 #include "iomanager.h"
 #include "log.h"
 #include "scheduler.h"
+#include "timer.h"
 #include <asm-generic/socket.h>
 #include <cerrno>
 #include <ctime>
 #include <dlfcn.h>
 #include <functional>
+#include <sys/socket.h>
 #include <sys/types.h>
 #include <vector>
 static mysylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
@@ -17,7 +20,8 @@ namespace mysylar
 {
 
 static thread_local bool t_hook_enable = false;
-
+static mysylar::ConfigVar<int>::ptr g_tcp_connect_timeout =
+    mysylar::Config::Lookup("tcp.connect.timeout", 5000, "tcp connect timeout");
 #define HOOK_FUN(XX)                                                                               \
     XX(sleep)                                                                                      \
     XX(usleep)                                                                                     \
@@ -52,12 +56,21 @@ void hook_init()
     HOOK_FUN(XX);
 #undef XX
 }
-
+static uint64_t s_connect_timeout = -1;
 struct _HookIniter
 {
     _HookIniter()
     {
         hook_init();
+        s_connect_timeout = g_tcp_connect_timeout->getValue();
+        // 监听配置项变化，动态更新连接超时时间
+        g_tcp_connect_timeout->addListener(
+            [](const int& old_value, const int& new_value)
+            {
+                SYLAR_LOG_INFO(g_logger)
+                    << "tcp connect timeout changed from " << old_value << " to " << new_value;
+                s_connect_timeout = new_value;
+            });
     }
 };
 
@@ -212,6 +225,7 @@ static ssize_t do_io(int fd, OriginFun fun, const char* hook_fun_name, uint32_t 
         // 不是hook版本，直接调用原始函数
         return fun(fd, std::forward<Args>(args)...);
     }
+    SYLAR_LOG_INFO(g_logger) << "do_io: " << hook_fun_name << " fd=" << fd << " event=" << event;
     mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(fd);
     if (!ctx)
     {
@@ -375,9 +389,101 @@ extern "C"
         mysylar::FdMgr::GetInstance()->get(fd, true);
         return fd;
     }
+
+    // connect函数的hook版本
+    int connect_with_timeout(int fd, const struct sockaddr* addr, socklen_t addrlen,
+                             uint64_t timeout_ms)
+    {
+        if (!mysylar::t_hook_enable)
+        {
+            return connect_f(fd, addr, addrlen);
+        }
+        mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(fd);
+        if (!ctx || ctx->isClose())
+        {
+            errno = EBADF;
+            return -1;
+        }
+        if (!ctx->isSocket())
+        {
+            return connect_f(fd, addr, addrlen);
+        }
+        if (ctx->getUserNonblock())
+        {
+            return connect_f(fd, addr, addrlen);
+        }
+
+        int n = connect(fd, addr, addrlen);
+        if (n == 0)
+        {
+            return 0;
+        }
+        else if (n != -1 || errno != EINPROGRESS)
+        {
+            return n;
+        }
+        mysylar::IOManager* iom = mysylar::IOManager::GetThis();
+        mysylar::Timer::ptr timer;
+        std::shared_ptr<timer_info> tinfo(new timer_info);
+        std::weak_ptr<timer_info> winfo(tinfo);
+        if (timeout_ms != (uint64_t) -1)
+        {
+            timer = iom->addConditionTimer(
+                timeout_ms,
+                [winfo, fd, iom]()
+                {
+                    auto t = winfo.lock();
+                    if (!t || t->cancelled)
+                    {
+                        return;
+                    }
+                    t->cancelled = ETIMEDOUT;
+                    iom->cancelEvent(fd, mysylar::IOManager::WRITE);
+                },
+                winfo);
+        }
+
+        int rt = iom->addEvent(fd, mysylar::IOManager::WRITE);
+        if (rt == 0)
+        {
+            mysylar::Fiber::YieldToHold();
+            if (timer)
+            {
+                timer->cancel();
+            }
+            if (tinfo->cancelled)
+            {
+                errno = tinfo->cancelled;
+                return -1;
+            }
+        }
+        else
+        {
+            if (timer)
+            {
+                timer->cancel();
+            }
+            SYLAR_LOG_ERROR(g_logger) << "connect addEvent(" << fd << ", WRITE) error";
+        }
+        int error = 0;
+        socklen_t len = sizeof(int);
+        if (-1 == getsockopt(fd, SOL_SOCKET, SO_ERROR, &error, &len))
+        {
+            return -1;
+        }
+        if (!error)
+        {
+            return 0;
+        }
+        else
+        {
+            errno = error;
+            return -1;
+        }
+    }
     int connect(int sockfd, const struct sockaddr* addr, socklen_t addrlen)
     {
-        return connect_f(sockfd, addr, addrlen);
+        return connect_with_timeout(sockfd, addr, addrlen, mysylar::s_connect_timeout);
     }
     int accept(int s, struct sockaddr* addr, socklen_t* addrlen)
     {
