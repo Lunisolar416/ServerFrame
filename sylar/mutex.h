@@ -12,7 +12,7 @@
  */
 namespace mysylar
 {
-class Semaphore
+class Semaphore : Noncopyable
 {
   public:
     /**

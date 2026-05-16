@@ -1,6 +1,7 @@
 #ifndef __SYLAR_THREAD_H__
 #define __SYLAR_THREAD_H__
 #include "mutex.h"
+#include "noncopyable.h"
 #include <functional>
 #include <memory>
 #include <pthread.h>
@@ -10,7 +11,7 @@
 
 namespace mysylar
 {
-class Thread
+class Thread : Noncopyable
 {
   public:
     typedef std::shared_ptr<Thread> ptr;
