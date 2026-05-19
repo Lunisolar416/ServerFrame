@@ -4,11 +4,10 @@
 #define SYLAR_LITTER_ENDIAN 1
 #define SYLAR_BIG_ENDIAN 2
 #include <byteswap.h>
-#include <cstdint>
+#include <stdint.h>
 #include <type_traits>
 namespace mysylar
 {
-
 template <class T>
 typename std::enable_if<sizeof(T) == sizeof(uint64_t), T>::type byteswap(T value)
 {
