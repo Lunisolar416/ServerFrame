@@ -54,6 +54,7 @@ T byteswapOnBigEndian(T t)
 {
     return t;
 }
+#endif
 } // namespace mysylar
 
 #endif //__SYLAR_ENDIAN_H__
