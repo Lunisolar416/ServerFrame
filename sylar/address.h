@@ -1,14 +1,11 @@
 #ifndef __SYLAR_ADDRESS_H__
 #define __SYLAR_ADDRESS_H__
-#include "endian.h"
-#include <cstring>
+
 #include <map>
 #include <memory>
 #include <netinet/in.h>
 #include <sys/socket.h>
-#include <sys/types.h>
 #include <sys/un.h>
-#include <unistd.h>
 #include <vector>
 namespace mysylar
 {
@@ -36,6 +33,7 @@ class Address
 
     int getFamily() const;
 
+    virtual sockaddr* getAddr() = 0;
     virtual const sockaddr* getAddr() const = 0;
     // virtual sockaddr* getAddr() = 0;
     virtual socklen_t getAddrLen() const = 0;
@@ -82,6 +80,7 @@ class IPv4Address : public IPAddress
     uint32_t getPort() const override;
     void setPort(uint16_t v) override;
 
+    sockaddr* getAddr() override;
     const sockaddr* getAddr() const override;
     socklen_t getAddrLen() const override;
     std::ostream& insert(std::ostream& os) const override;
@@ -106,7 +105,7 @@ class IPv6Address : public IPAddress
 
     uint32_t getPort() const override;
     void setPort(uint16_t v) override;
-
+    sockaddr* getAddr() override;
     const sockaddr* getAddr() const override;
     socklen_t getAddrLen() const override;
     std::ostream& insert(std::ostream& os) const override;
@@ -120,9 +119,11 @@ class UnixAddress : public Address
     typedef std::shared_ptr<UnixAddress> ptr;
     UnixAddress();
     UnixAddress(const std::string& path);
+    sockaddr* getAddr() override;
     const sockaddr* getAddr() const override;
     virtual socklen_t getAddrLen() const override;
     virtual std::ostream& insert(std::ostream& os) const;
+    void setAddrLen(uint32_t v);
 
   private:
     struct sockaddr_un m_addr;
@@ -134,6 +135,7 @@ class UnknownAddress : public Address
     typedef std::shared_ptr<UnknownAddress> ptr;
     UnknownAddress(int family);
     UnknownAddress(const sockaddr& addr);
+    sockaddr* getAddr() override;
     const sockaddr* getAddr() const override;
     virtual socklen_t getAddrLen() const override;
     virtual std::ostream& insert(std::ostream& os) const;

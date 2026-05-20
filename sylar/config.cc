@@ -1,7 +1,5 @@
 #include "config.h"
-#include <list>
-#include <sstream>
-#include <utility>
+
 namespace mysylar
 {
 

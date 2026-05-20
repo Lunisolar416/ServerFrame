@@ -2,19 +2,14 @@
 #include "hook.h"
 #include "config.h"
 #include "fd_manager.h"
-#include "fiber.h"
 #include "iomanager.h"
 #include "log.h"
-#include "scheduler.h"
-#include "timer.h"
-#include <asm-generic/socket.h>
-#include <cerrno>
-#include <ctime>
 #include <dlfcn.h>
 #include <functional>
+#include <stdarg.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <vector>
 static mysylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
 namespace mysylar
 {

@@ -1,12 +1,9 @@
 #include "log.h"
 #include "config.h"
-#include "util.h"
-#include <functional>
-#include <iostream>
-#include <map>
-#include <string.h>
-#include <time.h>
 
+#include <cstddef>
+#include <iostream>
+#include <stdarg.h>
 namespace mysylar
 {
 

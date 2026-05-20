@@ -1,14 +1,10 @@
 #ifndef __SYLAR_THREAD_H__
 #define __SYLAR_THREAD_H__
 #include "mutex.h"
-#include "noncopyable.h"
 #include <functional>
-#include <memory>
 #include <pthread.h>
 #include <string>
 #include <sys/types.h>
-#include <thread>
-
 namespace mysylar
 {
 class Thread : Noncopyable

@@ -2,17 +2,15 @@
 #include "endian.h"
 #include "log.h"
 #include <arpa/inet.h>
-#include <cstddef>
-#include <cstdint>
 #include <ifaddrs.h>
 #include <netdb.h>
-#include <netinet/in.h>
+#include <ostream>
 #include <sstream>
-#include <stdexcept>
-#include <sys/socket.h>
-#include <unistd.h>
+#include <stddef.h>
+#include <string.h>
 namespace mysylar
 {
+
 static mysylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
 template <class T>
 static T CreateMask(uint32_t bits)
@@ -332,7 +330,10 @@ IPv4Address::ptr IPv4Address::Create(const char* address, uint16_t port)
     }
     return rt;
 }
-
+sockaddr* IPv4Address::getAddr()
+{
+    return (sockaddr*) &m_addr;
+}
 const sockaddr* IPv4Address::getAddr() const
 {
     return (sockaddr*) &m_addr;
@@ -418,6 +419,10 @@ IPv6Address::IPv6Address(const uint8_t address[16], uint16_t port)
     m_addr.sin6_family = AF_INET6;
     m_addr.sin6_port = byteswapOnLittleEndian(port);
     memcpy(&m_addr.sin6_addr.s6_addr, address, 16);
+}
+sockaddr* IPv6Address::getAddr()
+{
+    return (sockaddr*) &m_addr;
 }
 const sockaddr* IPv6Address::getAddr() const
 {
@@ -522,9 +527,17 @@ UnixAddress::UnixAddress(const std::string& path)
     memcpy(m_addr.sun_path, path.c_str(), m_length);
     m_length += offsetof(sockaddr_un, sun_path);
 }
+sockaddr* UnixAddress::getAddr()
+{
+    return (sockaddr*) &m_addr;
+}
 const sockaddr* UnixAddress::getAddr() const
 {
     return (sockaddr*) &m_addr;
+}
+void UnixAddress::setAddrLen(uint32_t v)
+{
+    m_length = v;
 }
 socklen_t UnixAddress::getAddrLen() const
 {
@@ -549,6 +562,10 @@ UnknownAddress::UnknownAddress(int family)
 UnknownAddress::UnknownAddress(const sockaddr& addr)
 {
     m_addr = addr;
+}
+sockaddr* UnknownAddress::getAddr()
+{
+    return (sockaddr*) &m_addr;
 }
 const sockaddr* UnknownAddress::getAddr() const
 {

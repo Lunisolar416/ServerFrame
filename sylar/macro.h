@@ -12,7 +12,7 @@
 #else
 #define SYLAR_LIKELY(x) (x)
 #define SYLAR_UNLIKELY(x) (x)
-#endif -
+#endif
 
 /// 断言宏封装
 #define SYLAR_ASSERT(x)                                                                            \

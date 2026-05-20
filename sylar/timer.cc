@@ -1,7 +1,6 @@
 #include "timer.h"
 #include "util.h"
-#include <cstdint>
-#include <vector>
+
 namespace mysylar
 {
 

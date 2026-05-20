@@ -1,10 +1,7 @@
 #include "scheduler.h"
-#include "fiber.h"
 #include "hook.h"
 #include "log.h"
 #include "macro.h"
-#include "thread.h"
-#include "util.h"
 namespace mysylar
 {
 static mysylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");

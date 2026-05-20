@@ -1,10 +1,10 @@
 #ifndef __SYLAR_FD_MANAGER_H__
 #define __SYLAR_FD_MANAGER_H__
 
-#include "mutex.h"
 #include "singleton.h"
 #include "thread.h"
 #include <memory>
+#include <vector>
 namespace mysylar
 {
 class FdCtx : public std::enable_shared_from_this<FdCtx>

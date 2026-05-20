@@ -1,8 +1,7 @@
 #include "thread.h"
 #include "log.h"
 #include "util.h"
-#include <iostream>
-#include <pthread.h>
+
 namespace mysylar
 {
 

@@ -1,9 +1,7 @@
 #include "mutex.h"
-#include <cstdint>
-#include <pthread.h>
-#include <semaphore.h>
+#include "macro.h"
+#include "scheduler.h"
 #include <stdexcept>
-
 namespace mysylar
 {
 Semaphore::Semaphore(uint32_t count)

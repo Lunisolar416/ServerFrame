@@ -1,16 +1,11 @@
 #include "iomanager.h"
-#include "fiber.h"
 #include "log.h"
 #include "macro.h"
-#include "mutex.h"
-#include "scheduler.h"
-#include "timer.h"
-#include <cerrno>
-#include <cstddef>
-#include <cstdint>
+
+#include <errno.h>
 #include <fcntl.h>
+#include <string.h>
 #include <sys/epoll.h>
-#include <sys/types.h>
 #include <unistd.h>
 namespace mysylar
 {

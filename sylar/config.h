@@ -25,7 +25,6 @@
 #include "log.h"
 #include "thread.h"
 #include "util.h"
-
 namespace mysylar
 {
 

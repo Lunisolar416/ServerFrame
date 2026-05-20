@@ -5,8 +5,10 @@
 #include "mutex.h"
 #include "thread.h"
 #include <atomic>
+#include <cstddef>
 #include <list>
 #include <memory>
+#include <vector>
 namespace mysylar
 {
 

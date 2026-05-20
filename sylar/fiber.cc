@@ -3,12 +3,8 @@
 #include "log.h"
 #include "macro.h"
 #include "scheduler.h"
-#include "util.h"
 #include <atomic>
-#include <cstdint>
-#include <exception>
-#include <functional>
-#include <ucontext.h>
+#include <cstddef>
 namespace mysylar
 {
 static Logger::ptr g_logger = SYLAR_LOG_NAME("system");

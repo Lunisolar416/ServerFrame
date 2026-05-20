@@ -1,13 +1,11 @@
 #ifndef __SYLAR_UTIL_H__
 #define __SYLAR_UTIL_H__
 
-#include <cstdint>
 #include <cxxabi.h>
-#include <execinfo.h>
-#include <pthread.h>
-#include <sched.h>
+#include <stdint.h>
 #include <string>
-#include <sys/syscall.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include <vector>
 namespace mysylar
 {
@@ -22,9 +20,7 @@ const char* TypeToName()
     static const char* s_name = abi::__cxa_demangle(typeid(T).name(), nullptr, nullptr, nullptr);
     return s_name;
 }
-
 // 时间
-
 uint64_t GetCurrentMS();
 uint64_t GetCurrentUS();
 

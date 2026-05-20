@@ -1,6 +1,8 @@
 #include "fd_manager.h"
 #include "hook.h"
 #include <fcntl.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
 #include <sys/stat.h>
 namespace mysylar
 {

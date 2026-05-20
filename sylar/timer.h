@@ -1,12 +1,11 @@
 #ifndef __SYLAR_TIMER_H__
 #define __SYLAR_TIMER_H__
 
-#include "mutex.h"
-#include <cstdint>
+#include "thread.h"
 #include <functional>
 #include <memory>
 #include <set>
-#include <sys/types.h>
+#include <vector>
 namespace mysylar
 {
 class TimerManager;

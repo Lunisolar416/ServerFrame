@@ -1,8 +1,9 @@
 #ifndef __SYLAR__IOMANAGER_H__
 #define __SYLAR__IOMANAGER_H__
-#include "mutex.h"
 #include "scheduler.h"
 #include "timer.h"
+#include <list>
+#include <vector>
 namespace mysylar
 {
 

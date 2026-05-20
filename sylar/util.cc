@@ -1,10 +1,7 @@
 #include "util.h"
 #include "fiber.h"
 #include "log.h"
-#include <bits/types/struct_timeval.h>
-#include <cstdlib>
 #include <execinfo.h>
-#include <string>
 #include <sys/syscall.h>
 #include <sys/time.h>
 #include <unistd.h>
@@ -27,7 +24,6 @@ void Backtrace(std::vector<std::string>& bt, int size, int skip)
     char** strings = backtrace_symbols(array, s);
     if (strings == NULL)
     {
-        SYLAR_LOG_ERROR(g_logger) << "backtrace_symbols error";
         return;
     }
     for (size_t i = skip; i < s; ++i)

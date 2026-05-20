@@ -1,10 +1,8 @@
 #ifndef _SYLAR_FIBER_H_
 #define _SYLAR_FIBER_H_
 
-#include <cstdint>
 #include <functional>
 #include <memory>
-#include <sys/types.h>
 #include <ucontext.h>
 
 /**

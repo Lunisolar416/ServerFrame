@@ -5,10 +5,8 @@
 // 在Linux系统中，Hook技术常用于调试、性能分析、安全监控等
 
 // Socket相关函数的都是同步的，Hook技术可以将这些函数替换为异步的版本，从而实现非阻塞的网络编程。这对于高性能服务器开发非常有用，可以提高系统的吞吐量和响应速度。
-#include <sys/fcntl.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <sys/types.h>
+#include <fcntl.h>
+#include <stdint.h>
 #include <time.h>
 #include <unistd.h>
 namespace mysylar
@@ -107,6 +105,9 @@ extern "C"
     typedef int (*setsockopt_fun)(int sockfd, int level, int optname, const void* optval,
                                   socklen_t optlen);
     extern setsockopt_fun setsockopt_f;
+
+    extern int connect_with_timeout(int fd, const struct sockaddr* addr, socklen_t addrlen,
+                                    uint64_t timeout_ms);
 }
 
 #endif //__SYLAR__HOOK_H__
