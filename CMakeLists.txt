@@ -27,6 +27,7 @@ set(LIB_SRC
     sylar/timer.cc
     sylar/hook.cc
     sylar/fd_manager.cc
+    sylar/address.cc
 )
 
 # 生成共享库
@@ -124,6 +125,17 @@ add_dependencies(hook sylar)
 target_link_libraries(hook PRIVATE sylar)
 
 target_include_directories(hook PUBLIC
+    ${PROJECT_SOURCE_DIR}/sylar
+)
+
+# ======================
+# 测试 address 程序
+# ======================
+add_executable(address test/test_address.cc)
+add_dependencies(address sylar)
+target_link_libraries(address PRIVATE sylar)
+
+target_include_directories(address PUBLIC
     ${PROJECT_SOURCE_DIR}/sylar
 )
 
