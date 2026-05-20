@@ -1,155 +1,105 @@
 cmake_minimum_required(VERSION 3.16)
-project(mysylar)
+project(sylar)
 
-# 打印详细编译信息
-set(CMAKE_VERBOSE_MAKEFILE ON)
-
-# 设置C++标准
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 编译选项
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic -g -O3 -Wall -Wextra -Werror -pthread -Wno-unused-function -Wno-deprecated -Wno-unused-parameter")
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-# 查找系统安装的 yaml-cpp
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic -O3 -fPIC -ggdb -Wall -Werror -pthread")
+
+# =========================
+# modules path
+# =========================
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+# =========================
+# third party packages
+# =========================
+find_package(Boost REQUIRED)
+
+# yaml-cpp（推荐 modern target）
 find_package(yaml-cpp REQUIRED)
 
-# 源文件
+# =========================
+# library source
+# =========================
 set(LIB_SRC
-    sylar/log.cc
-    sylar/util.cc
-    sylar/config.cc
-    sylar/thread.cc
-    sylar/mutex.cc
-    sylar/fiber.cc
-    sylar/scheduler.cc
-    sylar/iomanager.cc
-    sylar/timer.cc
-    sylar/hook.cc
-    sylar/fd_manager.cc
     sylar/address.cc
+    sylar/config.cc
+    sylar/fiber.cc
+    sylar/hook.cc
+    sylar/iomanager.cc
+    sylar/log.cc
+    sylar/socket.cc
+    sylar/thread.cc
+    sylar/util.cc
+    sylar/timer.cc
+    sylar/scheduler.cc
+    sylar/fd_manager.cc
+    sylar/mutex.cc
 )
 
-# 生成共享库
+# =========================
+# generate sylar library
+# =========================
 add_library(sylar SHARED ${LIB_SRC})
 
-# 添加头文件目录（让其他目标可以包含 sylar/xxx.h）
-target_include_directories(sylar PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
+target_include_directories(sylar
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}
 )
 
-# 链接 yaml-cpp 到 sylar 库
-target_link_libraries(sylar PUBLIC yaml-cpp::yaml-cpp)
-
-# ======================
-# 测试 log 程序
-# ======================
-add_executable(logtest test/logtest.cc)
-add_dependencies(logtest sylar)
-target_link_libraries(logtest PRIVATE sylar)
-
-target_include_directories(logtest PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
+target_link_libraries(sylar
+    PUBLIC
+        yaml-cpp
+        pthread
+        dl
+        ${Boost_LIBRARIES}
+        ${OPENSSL_LIBRARIES}
+        ${ZLIB_LIBRARIES}
+        ${Protobuf_LIBRARIES}
+        ${MYSQL_LIBRARIES}
 )
 
-# ======================
-# 测试 config 程序
-# ======================
-add_executable(config test/testconfig.cc)
-add_dependencies(config sylar)
-target_link_libraries(config PRIVATE sylar)
-
-target_include_directories(config PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
-)
-# ======================
-# 测试 config 程序
-# ======================
-add_executable(thread test/testthread.cc)
-add_dependencies(thread sylar)
-target_link_libraries(thread PRIVATE sylar)
-
-target_include_directories(thread PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
+# =========================
+# safer include style (IMPORTANT)
+# =========================
+target_include_directories(sylar SYSTEM PUBLIC
+    ${Boost_INCLUDE_DIRS}
+    ${OPENSSL_INCLUDE_DIR}
+    ${ZLIB_INCLUDE_DIR}
+    ${MYSQL_INCLUDE_DIR}
 )
 
-# ======================
-# 测试 util 程序
-# ======================
-add_executable(util test/test_util.cc)
-add_dependencies(util sylar)
-target_link_libraries(util PRIVATE sylar)
-
-target_include_directories(util PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
-)
-# ======================
-# 测试 fiber 程序
-# ======================
-add_executable(fiber test/test_fiber.cc)
-add_dependencies(fiber sylar)
-target_link_libraries(fiber PRIVATE sylar)
-
-target_include_directories(fiber PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
-)
-
-# ======================
-# 测试 scheduler 程序
-# ======================
-add_executable(scheduler test/test_scheduler.cc)
-add_dependencies(scheduler sylar)
-target_link_libraries(scheduler PRIVATE sylar)
-
-target_include_directories(scheduler PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
-)
-
-# ======================
-# 测试 iomanager 程序
-# ======================
-add_executable(iomanager test/test_iomanager.cc)
-add_dependencies(iomanager sylar)
-target_link_libraries(iomanager PRIVATE sylar)
-
-target_include_directories(iomanager PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
-)
-
-
-# ======================
-# 测试 hook 程序
-# ======================
-add_executable(hook test/test_hook.cc)
-add_dependencies(hook sylar)
-target_link_libraries(hook PRIVATE sylar)
-
-target_include_directories(hook PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
-)
-
-# ======================
-# 测试 address 程序
-# ======================
-add_executable(address test/test_address.cc)
-add_dependencies(address sylar)
-target_link_libraries(address PRIVATE sylar)
-
-target_include_directories(address PUBLIC
-    ${PROJECT_SOURCE_DIR}/sylar
-)
-
-# ======================
-# 设置输出目录
-# ======================
+# =========================
+# output dirs
+# =========================
 set_target_properties(sylar PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib
 )
 
-set_target_properties(logtest PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin
-)
+# =========================
+# test helper macro
+# =========================
+function(add_sylar_test name file)
+    add_executable(${name} ${file})
+    target_link_libraries(${name} PRIVATE sylar)
+    target_include_directories(${name} PRIVATE ${PROJECT_SOURCE_DIR})
+    set_target_properties(${name} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin
+    )
+endfunction()
 
-set_target_properties(config PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin
-)
+# =========================
+# tests (clean version)
+# =========================
+add_sylar_test(logtest test/logtest.cc)
+add_sylar_test(config test/testconfig.cc)
+add_sylar_test(thread test/testthread.cc)
+add_sylar_test(util test/test_util.cc)
+add_sylar_test(fiber test/test_fiber.cc)
+add_sylar_test(scheduler test/test_scheduler.cc)
+add_sylar_test(iomanager test/test_iomanager.cc)
+add_sylar_test(hook test/test_hook.cc)
+add_sylar_test(address test/test_address.cc)
