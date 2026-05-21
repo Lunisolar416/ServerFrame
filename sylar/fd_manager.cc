@@ -1,15 +1,19 @@
 #include "fd_manager.h"
 #include "hook.h"
+#include "log.h"
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 namespace mysylar
 {
+static Logger::ptr g_logger = SYLAR_LOG_ROOT();
+
 FdCtx::FdCtx(int fd)
-    : m_isInit(false), m_isSocket(false), m_sysNonblock(false), m_userNonblock(false), m_fd(-1),
-      m_recvTimeout(-1), m_sendTimeout(-1)
+    : m_isInit(false), m_isSocket(false), m_sysNonblock(false), m_userNonblock(false),
+      m_isClosed(false), m_fd(fd), m_recvTimeout(-1), m_sendTimeout(-1)
 {
+    init();
 }
 FdCtx::~FdCtx() {}
 
@@ -83,6 +87,7 @@ FdManager::FdManager()
 }
 FdCtx::ptr FdManager::get(int fd, bool auto_create)
 {
+    // SYLAR_LOG_DEBUG(g_logger) << "fd = " << fd;
     if (fd == -1)
     {
         return nullptr;
