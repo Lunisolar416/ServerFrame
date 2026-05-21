@@ -262,6 +262,7 @@ retry:
         {
             // 添加一个条件定时器，超时后会执行回调函数，回调函数会设置 timer_info 的 cancelled
             // 字段，并取消事件监听，唤醒协程
+            SYLAR_LOG_INFO(g_logger) << "addConditionTimer in do_io";
             timer = iom->addConditionTimer(
                 to,
                 [winfo, fd, iom, event]()
@@ -278,6 +279,7 @@ retry:
         }
 
         int rt = iom->addEvent(fd, (mysylar::IOManager::Event)(event));
+        SYLAR_LOG_INFO(g_logger) << "AddEvent fd=" << fd << " event=" << event;
         if (rt)
         {
             SYLAR_LOG_ERROR(g_logger)
@@ -396,6 +398,7 @@ extern "C"
         mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(fd);
         if (!ctx || ctx->isClose())
         {
+            SYLAR_LOG_DEBUG(g_logger) << "ctx is nullptr";
             errno = EBADF;
             return -1;
         }
@@ -408,7 +411,7 @@ extern "C"
             return connect_f(fd, addr, addrlen);
         }
 
-        int n = connect(fd, addr, addrlen);
+        int n = connect_f(fd, addr, addrlen);
         if (n == 0)
         {
             return 0;
