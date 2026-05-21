@@ -83,11 +83,23 @@ void Scheduler::stop()
     if (m_rootFiber && m_threadCount == 0 &&
         (m_rootFiber->getState() == Fiber::TERM || m_rootFiber->getState() == Fiber::INIT))
     {
+        SYLAR_LOG_INFO(g_logger) << this << " stopped";
         m_stopping = true;
+
         if (stopping())
         {
             return;
         }
+    }
+
+    // bool exit_on_this_fiber = false;
+    if (m_rootThread != -1)
+    {
+        SYLAR_ASSERT(GetThis() == this);
+    }
+    else
+    {
+        SYLAR_ASSERT(GetThis() != this);
     }
 
     m_stopping = true;
@@ -95,32 +107,46 @@ void Scheduler::stop()
     {
         tickle();
     }
+
     if (m_rootFiber)
     {
         tickle();
     }
+
     if (m_rootFiber)
     {
+        // while(!stopping()) {
+        //     if(m_rootFiber->getState() == Fiber::TERM
+        //             || m_rootFiber->getState() == Fiber::EXCEPT) {
+        //         m_rootFiber.reset(new Fiber(std::bind(&Scheduler::run, this), 0, true));
+        //         SYLAR_LOG_INFO(g_logger) << " root fiber is term, reset";
+        //         t_fiber = m_rootFiber.get();
+        //     }
+        //     m_rootFiber->call();
+        // }
         if (!stopping())
         {
             m_rootFiber->call();
         }
     }
-    // 将所有线程结束
+
     std::vector<Thread::ptr> thrs;
     {
         MutexType::Lock lock(m_mutex);
         thrs.swap(m_threads);
     }
+
     for (auto& i : thrs)
     {
         i->join();
     }
+    // if(exit_on_this_fiber) {
+    // }
 }
 // 通知协程调度器有任务了
 void Scheduler::tickle()
 {
-    // SYLAR_LOG_INFO(g_logger) << "tickle";
+    SYLAR_LOG_INFO(g_logger) << "tickle";
 }
 // 将
 void Scheduler::setThis()
@@ -243,7 +269,6 @@ void Scheduler::run()
         else
         {
             // 这时候就已经没任务了，idle协程
-            // SYLAR_LOG_INFO(g_logger) << "enter idle fiber";
             if (is_active)
             {
                 --m_activeThreadCount;
@@ -256,6 +281,7 @@ void Scheduler::run()
             }
 
             ++m_idleThreadCount;
+            SYLAR_LOG_INFO(g_logger) << "enter idle fiber";
             idle_fiber->swapIn();
             --m_idleThreadCount;
             if (idle_fiber->getState() != Fiber::TERM && idle_fiber->getState() != Fiber::EXCEPT)
@@ -269,7 +295,17 @@ void Scheduler::run()
 bool Scheduler::stopping()
 {
     MutexType::Lock lock(m_mutex);
-    return m_autoStop && m_stopping && m_fibers.empty() && m_activeThreadCount == 0;
+    SYLAR_LOG_INFO(g_logger) << "m_autoStop :" << m_autoStop << " m_stopping " << m_stopping
+                             << "is m_fiber empty " << m_fibers.empty() << " m_activeThreadCount "
+                             << m_activeThreadCount;
+    // return m_autoStop && m_stopping && m_fibers.empty() && m_activeThreadCount == 0;
+
+    if (m_autoStop && m_stopping && m_fibers.empty() && m_activeThreadCount == 0)
+    {
+        SYLAR_LOG_INFO(g_logger) << "Scheduler is stopping";
+        return true;
+    }
+    return false;
 }
 
 } // namespace mysylar

@@ -122,15 +122,16 @@ uint64_t TimerManager::getNextTimer()
     {
         return ~0ull;
     }
-    const Timer::ptr& timer = *m_timers.begin();
+
+    const Timer::ptr& next = *m_timers.begin();
     uint64_t now_ms = mysylar::GetCurrentMS();
-    if (now_ms >= timer->m_next)
+    if (now_ms >= next->m_next)
     {
         return 0;
     }
     else
     {
-        return timer->m_next - now_ms;
+        return next->m_next - now_ms;
     }
 }
 
