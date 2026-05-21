@@ -97,7 +97,7 @@ class IOManager : public Scheduler, public TimerManager
     bool stopping() override;
     void idle() override;
 
-    void contexResize(size_t size);
+    void contextResize(size_t size);
 
     // 继承TimerManager的接口
     void onTimerInsertedAtFront() override;
@@ -108,7 +108,7 @@ class IOManager : public Scheduler, public TimerManager
     ///
     int m_tickleFds[2];
     /// 当前等待执行的事件数量
-    std::atomic<size_t> m_pendingEventCount;
+    std::atomic<size_t> m_pendingEventCount{0};
     /// IOManager的Mutex
     RWMutexType m_mutex;
     /// socket事件上下文的容器
