@@ -68,7 +68,7 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool user_caller)
 }
 Fiber::~Fiber()
 {
-    // SYLAR_LOG_INFO(g_logger) << "~Fiber::Fiber ID " << GetFiberId();
+    SYLAR_LOG_INFO(g_logger) << "~Fiber::Fiber ID " << GetFiberId();
     --s_fiber_count;
     if (m_stack)
     {
