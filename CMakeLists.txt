@@ -38,6 +38,7 @@ set(LIB_SRC
     sylar/scheduler.cc
     sylar/fd_manager.cc
     sylar/mutex.cc
+    sylar/bytearray.cc
 )
 
 # =========================
@@ -104,3 +105,4 @@ add_sylar_test(iomanager test/test_iomanager.cc)
 add_sylar_test(hook test/test_hook.cc)
 add_sylar_test(address test/test_address.cc)
 add_sylar_test(socket test/test_socket.cc)
+add_sylar_test(bytearray test/test_bytearray.cc)
