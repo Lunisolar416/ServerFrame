@@ -39,6 +39,7 @@ set(LIB_SRC
     sylar/fd_manager.cc
     sylar/mutex.cc
     sylar/bytearray.cc
+    sylar/http/http.cc
 )
 
 # =========================
@@ -106,3 +107,4 @@ add_sylar_test(hook test/test_hook.cc)
 add_sylar_test(address test/test_address.cc)
 add_sylar_test(socket test/test_socket.cc)
 add_sylar_test(bytearray test/test_bytearray.cc)
+add_sylar_test(http test/test_http.cc)
