@@ -249,6 +249,14 @@ void HttpResponse::setCookie(const std::string& key, const std::string& val, tim
                              const std::string& path, const std::string& domain, bool secure)
 {
 }
+std::ostream& operator<<(std::ostream& os, const HttpRequest& req)
+{
+    return req.dump(os);
+}
 
+std::ostream& operator<<(std::ostream& os, const HttpResponse& rsp)
+{
+    return rsp.dump(os);
+}
 } // namespace http
 } // namespace mysylar
