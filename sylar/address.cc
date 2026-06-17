@@ -522,7 +522,7 @@ UnixAddress::UnixAddress(const std::string& path)
     m_length = path.size() + 1;
     if (!path.empty() && path[0] == '\0')
         --m_length;
-    if (m_length <= sizeof(m_addr.sun_path))
+    if (m_length > sizeof(m_addr.sun_path))
         throw std::logic_error("path too long");
     memcpy(m_addr.sun_path, path.c_str(), m_length);
     m_length += offsetof(sockaddr_un, sun_path);
