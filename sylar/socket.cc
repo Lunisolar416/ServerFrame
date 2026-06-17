@@ -152,7 +152,7 @@ Socket::ptr Socket::accept()
 }
 bool Socket::bind(const Address::ptr addr)
 {
-    if (isValid())
+    if (!isValid())
     {
         newSock();
         if (SYLAR_UNLIKELY(!isValid()))
@@ -482,5 +482,9 @@ bool Socket::init(int sock)
         return true;
     }
     return false;
+}
+std::ostream& operator<<(std::ostream& os, const Socket& sock)
+{
+    return sock.dump(os);
 }
 } // namespace mysylar

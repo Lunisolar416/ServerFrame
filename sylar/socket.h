@@ -169,5 +169,7 @@ class Socket : public std::enable_shared_from_this<Socket>, Noncopyable
     Address::ptr m_localAddress;
     Address::ptr m_remoteAddress;
 };
+
+std::ostream& operator<<(std::ostream& os, const Socket& sock);
 } // namespace mysylar
 #endif //__SYLAR_SOCKET_H__
