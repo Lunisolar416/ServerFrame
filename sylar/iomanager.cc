@@ -212,7 +212,7 @@ int IOManager::addEvent(int fd, Event event, std::function<void()> cb)
     ++m_pendingEventCount;
     fd_ctx->events = (Event) (fd_ctx->events | event);
     FdContext::EventContext& event_ctx = fd_ctx->getContext(event);
-    // SYLAR_ASSERT(!event_ctx.scheduler && !event_ctx.fiber && !event_ctx.cb);
+    SYLAR_ASSERT(!event_ctx.scheduler && !event_ctx.fiber && !event_ctx.cb);
 
     event_ctx.scheduler = Scheduler::GetThis();
     if (cb)
@@ -366,9 +366,9 @@ void IOManager::tickle()
 bool IOManager::stopping(uint64_t& timeout)
 {
     timeout = getNextTimer();
-    SYLAR_LOG_INFO(g_logger) << "timeout " << timeout << "m_pendingEventCount "
+    /*SYLAR_LOG_INFO(g_logger) << "timeout " << timeout << "m_pendingEventCount "
                              << m_pendingEventCount << " Scheduler::stopping() "
-                             << Scheduler::stopping();
+                             << Scheduler::stopping();*/
     return timeout == ~0ull && m_pendingEventCount == 0 && Scheduler::stopping();
 }
 
@@ -380,7 +380,7 @@ bool IOManager::stopping()
 
 void IOManager::idle()
 {
-    SYLAR_LOG_DEBUG(g_logger) << "IdleFiber runing";
+    // SYLAR_LOG_DEBUG(g_logger) << "IdleFiber runing";
     const uint64_t MAX_EVNETS = 256;
     epoll_event* events = new epoll_event[MAX_EVNETS]();
     std::shared_ptr<epoll_event> shared_events(events, [](epoll_event* ptr) { delete[] ptr; });

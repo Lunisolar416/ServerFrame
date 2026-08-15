@@ -281,7 +281,7 @@ void Scheduler::run()
             }
 
             ++m_idleThreadCount;
-            SYLAR_LOG_INFO(g_logger) << "enter idle fiber";
+            // SYLAR_LOG_INFO(g_logger) << "enter idle fiber";
             idle_fiber->swapIn();
             --m_idleThreadCount;
             if (idle_fiber->getState() != Fiber::TERM && idle_fiber->getState() != Fiber::EXCEPT)
@@ -295,14 +295,14 @@ void Scheduler::run()
 bool Scheduler::stopping()
 {
     MutexType::Lock lock(m_mutex);
-    SYLAR_LOG_INFO(g_logger) << "m_autoStop :" << m_autoStop << " m_stopping " << m_stopping
+    /*SYLAR_LOG_INFO(g_logger) << "m_autoStop :" << m_autoStop << " m_stopping " << m_stopping
                              << "is m_fiber empty " << m_fibers.empty() << " m_activeThreadCount "
-                             << m_activeThreadCount;
+                             << m_activeThreadCount;*/
     // return m_autoStop && m_stopping && m_fibers.empty() && m_activeThreadCount == 0;
 
     if (m_autoStop && m_stopping && m_fibers.empty() && m_activeThreadCount == 0)
     {
-        SYLAR_LOG_INFO(g_logger) << "Scheduler is stopping";
+        // SYLAR_LOG_INFO(g_logger) << "Scheduler is stopping";
         return true;
     }
     return false;

@@ -1,8 +1,8 @@
 #ifndef __SYLAR_BYTEARRAY_H__
-#define _SYLAR_BYTEARRAY_H__
+#define __SYLAR_BYTEARRAY_H__
 #include <bits/types/struct_iovec.h>
-#include <cstdint>
 #include <memory>
+#include <stdint.h>
 #include <string>
 #include <sys/types.h>
 #include <vector>

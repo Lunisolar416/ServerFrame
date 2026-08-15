@@ -220,7 +220,7 @@ static ssize_t do_io(int fd, OriginFun fun, const char* hook_fun_name, uint32_t 
         // 不是hook版本，直接调用原始函数
         return fun(fd, std::forward<Args>(args)...);
     }
-    SYLAR_LOG_INFO(g_logger) << "do_io: " << hook_fun_name << " fd=" << fd << " event=" << event;
+    // SYLAR_LOG_INFO(g_logger) << "do_io: " << hook_fun_name << " fd=" << fd << " event=" << event;
     mysylar::FdCtx::ptr ctx = mysylar::FdMgr::GetInstance()->get(fd);
     if (!ctx)
     {
