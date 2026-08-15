@@ -4,9 +4,13 @@ project(sylar)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic -O3 -fPIC -ggdb -Wall -Werror -pthread")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+include (cmake/utils.cmake)
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -O3 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations")
+set(CMAKE_C_FLAGS "$ENV{CXXFLAGS} -rdynamic -O3 -fPIC -ggdb -std=c11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations")
 
 # =========================
 # modules path
@@ -40,8 +44,32 @@ set(LIB_SRC
     sylar/mutex.cc
     sylar/bytearray.cc
     sylar/http/http.cc
+    sylar/http/http_parser.cc
+    sylar/http/http_session.cc
+    sylar/http/http_connection.cc
+    sylar/http/http_server.cc
+    sylar/http/servlet.cc
+    sylar/tcp_server.cc
+    sylar/stream.cc
+    sylar/socket_stream.cc
+)
+ragelmaker(
+    sylar/http/http11_parser.rl
+    LIB_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/sylar/http
 )
 
+ragelmaker(
+    sylar/http/httpclient_parser.rl
+    LIB_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/sylar/http
+)
+
+ragelmaker(
+    sylar/uri.rl
+    LIB_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/sylar
+)
 # =========================
 # generate sylar library
 # =========================
@@ -108,3 +136,9 @@ add_sylar_test(address test/test_address.cc)
 add_sylar_test(socket test/test_socket.cc)
 add_sylar_test(bytearray test/test_bytearray.cc)
 add_sylar_test(http test/test_http.cc)
+add_sylar_test(httpparser test/test_httpparser.cc)
+add_sylar_test(tcpserver test/test_tcp_server.cc)
+add_sylar_test(echoserver example/echo_server.cc)
+add_sylar_test(httpserver test/test_httpserver.cc)
+add_sylar_test(httpconnection test/test_httpconnection.cc)
+add_sylar_test(uri test/test_uri.cc)
