@@ -63,6 +63,10 @@ struct _RequestIninter
                                                 { s_http_request_buffer_size = nv; });
         g_http_request_max_body_size->addListener([](const uint64_t& ov, const uint64_t& nv)
                                                   { s_http_request_max_body_size = nv; });
+        g_http_response_buffer_size->addListener([](const uint64_t& ov, const uint64_t& nv)
+                                                 { s_http_response_buffer_size = nv; });
+        g_http_response_max_body_size->addListener([](const uint64_t& ov, const uint64_t& nv)
+                                                   { s_http_response_max_body_size = nv; });
     }
 };
 static _RequestIninter _init;
@@ -147,6 +151,7 @@ HttpRequestParser::HttpRequestParser()
 //>0: 已处理的字节数，且data有效数据为len - v;
 size_t HttpRequestParser::execute(char* data, size_t len)
 {
+    // offset 是指已经解析完成的字节数
     size_t offset = http_parser_execute(&m_parser, data, len, 0);
     memmove(data, data + offset, len - offset);
     return offset;
